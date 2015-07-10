@@ -7,20 +7,30 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import cn.sh.smg.motianlun.Comm.Constant;
 import cn.sh.smg.motianlun.R;
+import cn.sh.smg.motianlun.model.HuoDong;
 
 //import com.android.volley.RequestQueue;
 //import com.android.volley.Response;
@@ -56,8 +66,8 @@ public class SlideShowView extends FrameLayout implements Handler.Callback{
 
     private Context context;
     private Handler handler;
-//    private RequestQueue mQueue;
-//    private StringRequest stringRequest;
+    private RequestQueue mQueue;
+    private StringRequest stringRequest;
 
 
     public SlideShowView(Context context) {
@@ -116,41 +126,41 @@ public class SlideShowView extends FrameLayout implements Handler.Callback{
 
 
     private void getList(){
-//        String url = Constant.CONNECT_HOST_API+Constant.HOME_API;
-//        Log.w("Tt","url="+url+"");
-//        stringRequest = new StringRequest(url , new Response.Listener<String>() {
-//            @Override
-//            public void onResponse(String response) {
-//                try{
-//                    Log.w("Tt",response);
-//                    if(null!=response){
-//                        JSONObject res = new JSONObject(response);
-//                        if(res.optInt("statuscode")==1){
-//                            JSONObject data = res.optJSONObject("data");
-//                            JSONArray array = data.optJSONArray("top_events");
-//                            int length = array.length();
-//                            imgUrls = new String[length];
-//                            for(int i=0;i<length;i++){
-//                                HuoDong h = new HuoDong(array.getJSONObject(i));
-//                                imgUrls[i] = h.gallaryid;
-//                            }
-//                        }
-//                    }
-//                    if (imgUrls!=null) {
-//                        initUI(context);
-//                    }
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                error.printStackTrace();
-//            }
-//        });
-//        mQueue.add(stringRequest);
+        String url = Constant.CONNECT_HOST_API+Constant.HOME_API;
+        Log.w("Tt", "url=" + url + "");
+        stringRequest = new StringRequest(url , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try{
+                    Log.w("Tt",response);
+                    if(null!=response){
+                        JSONObject res = new JSONObject(response);
+                        if(res.optInt("statuscode")==1){
+                            JSONObject data = res.optJSONObject("data");
+                            JSONArray array = data.optJSONArray("top_events");
+                            int length = array.length();
+                            imgUrls = new String[length];
+                            for(int i=0;i<length;i++){
+                                HuoDong h = new HuoDong(array.getJSONObject(i));
+                                imgUrls[i] = h.gallaryid;
+                            }
+                        }
+                    }
+                    if (imgUrls!=null) {
+                        initUI(context);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(stringRequest);
     }
 
     /**

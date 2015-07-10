@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mActionBarDrawerToggle.syncState();
+//        getList();
     }
 
     @Override
